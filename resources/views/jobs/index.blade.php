@@ -3,39 +3,13 @@
 @section('title', 'Latest Jobs')
 
 @section('content')
-<div class="flex min-h-screen bg-gray-100">
+<div class="p-6 lg:p-10 max-w-7xl mx-auto">
 
-    <!-- Sidebar (same as user dashboard) -->
-    <aside class="w-64 bg-white shadow-lg flex-shrink-0 hidden lg:block">
-        <div class="flex flex-col h-full">
-            <!-- Brand / Logo -->
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-indigo-600 rounded-lg p-2">
-                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A9.002 9.002 0 0112 21a9.002 9.002 0 01-9-7.745M21 13.255A9.002 9.002 0 0012 3a9.002 9.002 0 00-9 10.255M12 3v18"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold text-gray-900">Job Portal</h2>
-                        <p class="text-xs text-gray-500">{{ auth()->check() ? auth()->user()->name : 'Guest' }}</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Navigation -->
-            <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
-                <a href="{{ route('user.dashboard') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1 1v10a1 1 0 001 1h6a1 1 0 001-1V10a1 1 0 00-1-1h-6z"></path>
-                    </svg>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-
-                <a href="{{ route('jobs.index') }}" class="flex items-center space-x-3 px-4 py-3 text-indigo-700 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
+    <!-- Page Header -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-10 gap-6">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 tracking-tight">Latest Job Opportunities</h1>
+            <p class="mt-2 text-lg text-gray-600">Discover the newest career opportunities</p>
                     <span class="font-medium">Find Jobs</span>
                 </a>
 
@@ -53,7 +27,7 @@
                     <span class="font-medium">Saved Jobs</span>
                 </a>
 
-                <a href="{{ route('user.interviews') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
+                <a href="{{ route('user.interviews.index') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                     </svg>

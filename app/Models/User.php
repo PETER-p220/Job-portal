@@ -35,7 +35,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Get attributes that should be cast.
      *
      * @return array<string, string>
      */
@@ -52,9 +52,24 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
-    // Add relation for jobs (assuming users post jobs)
+    // Relationships
     public function jobs()
     {
         return $this->hasMany(Job::class);
+    }
+
+    public function applications()
+    {
+        return $this->hasMany(Application::class);
+    }
+
+    public function interviews()
+    {
+        return $this->hasMany(Interview::class);
+    }
+
+    public function savedJobs()
+    {
+        return $this->belongsToMany(Job::class, 'saved_jobs')->withTimestamps();
     }
 }

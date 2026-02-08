@@ -103,6 +103,28 @@
                     @enderror
                 </div>
 
+                <!-- Deadline -->
+                <div>
+                    <label for="deadline" class="block text-sm font-medium text-gray-700 mb-2">
+                        Application Deadline
+                        @if($job->isExpired())
+                            <span class="text-red-500 text-xs">(Expired)</span>
+                        @endif
+                    </label>
+                    <input type="date" 
+                           id="deadline" 
+                           name="deadline" 
+                           value="{{ $job->deadline ? $job->deadline->format('Y-m-d') : '' }}"
+                           min="{{ now()->addDay()->format('Y-m-d') }}"
+                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                    @error('deadline')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                    @if($job->isExpired())
+                        <p class="mt-1 text-sm text-orange-600">Leave empty to keep current deadline, or select a new date to extend</p>
+                    @endif
+                </div>
+
                 <!-- Salary -->
                 <div>
                     <label for="salary" class="block text-sm font-medium text-gray-700 mb-2">

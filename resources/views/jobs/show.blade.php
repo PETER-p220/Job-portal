@@ -172,6 +172,26 @@
                                 No application method specified. Please contact the employer directly.
                             </p>
                         @endif
+
+                        <!-- Save Job Button -->
+                        @if(auth()->check() && !auth()->user()->isAdmin())
+                            <div class="mt-6 pt-6 border-t border-gray-200">
+                                <form action="{{ route('user.saved-jobs.save', $job) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" 
+                                            class="w-full inline-flex items-center justify-center px-8 py-4 bg-gray-100 text-gray-700 border-2 border-gray-300 text-lg font-semibold rounded-xl hover:bg-gray-200 transition-all">
+                                        <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
+                                        </svg>
+                                        @if(auth()->user()->savedJobs()->where('job_id', $job->id)->exists())
+                                            Saved
+                                        @else
+                                            Save Job
+                                        @endif
+                                    </button>
+                                </form>
+                            </div>
+                        @endif
                     </div>
                 </div>
 

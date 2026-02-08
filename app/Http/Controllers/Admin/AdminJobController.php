@@ -14,7 +14,10 @@ class AdminJobController extends Controller
     public function index()
     {
         $jobs = Job::latest()->paginate(15);
-        return view('admin.jobs.index', compact('jobs'));
+        $activeJobs = Job::active()->count();
+        $expiredJobs = Job::expired()->count();
+        
+        return view('admin.jobs.index', compact('jobs', 'activeJobs', 'expiredJobs'));
     }
 
     /**
@@ -91,15 +94,39 @@ class AdminJobController extends Controller
             'salary' => 'nullable|string|max:100',
             'type' => 'required|string|in:Full-time,Part-time,Remote,Contract,Freelance',
             'experience_level' => 'nullable|string|in:Entry Level,Mid Level,Senior Level,Executive',
+            'deadline' => 'nullable|date|after:today',
             'is_active' => 'boolean',
         ]);
 
         $validated['is_active'] = $request->has('is_active') ? true : false;
 
+        // If deadline is provided, update it
+        if ($request->filled('deadline')) {
+            $validated['deadline'] = $request->deadline;
+        }
+
         $job->update($validated);
 
         return redirect()->route('admin.jobs.index')
             ->with('success', 'Job updated successfully.');
+    }
+
+    /**
+     * Extend deadline for a job
+     */
+    public function extendDeadline(Request $request, Job $job)
+    {
+        $validated = $request->validate([
+            'deadline' => 'required|date|after:today',
+        ]);
+
+        $job->update([
+            'deadline' => $validated['deadline'],
+            'is_active' => true, // Reactivate if expired
+        ]);
+
+        return redirect()->route('admin.jobs.index')
+            ->with('success', 'Job deadline extended successfully.');
     }
 
     /**

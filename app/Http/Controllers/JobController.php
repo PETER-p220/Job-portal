@@ -9,9 +9,7 @@ class JobController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Job::query()
-            ->where('is_active', true)
-            ->latest(); // newest jobs first
+        $query = Job::active()->latest(); // only active jobs (not expired)
 
         // Keyword search (title, company, description)
         if ($request->filled('search')) {
@@ -46,6 +44,12 @@ class JobController extends Controller
 
     public function show(Job $job)
     {
+        // Check if job is expired
+        if ($job->isExpired()) {
+            return redirect()->route('jobs.index')
+                ->with('error', 'This job posting has expired and is no longer available.');
+        }
+
         return view('jobs.show', compact('job'));
     }
 

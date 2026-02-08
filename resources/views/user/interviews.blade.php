@@ -1,135 +1,163 @@
-@extends('layouts.app')
+@extends('user.layout')
 
-@section('title', 'Interviews')
+@section('title', 'My Interviews')
 
 @section('content')
-<div class="flex h-screen bg-gray-100">
+<div class="p-6 lg:p-10">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">My Interviews</h1>
+        <p class="mt-2 text-gray-600">Manage your scheduled interviews and track their status</p>
+    </div>
 
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-lg flex-shrink-0">
-        <div class="flex flex-col h-full">
-            <div class="p-6 border-b border-gray-200">
-                <div class="flex items-center space-x-3">
-                    <div class="bg-indigo-600 rounded-lg p-2">
-                        <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A9.002 9.002 0 0112 21a9.002 9.002 0 01-9-7.745M21 13.255A9.002 9.002 0 0012 3a9.002 9.002 0 00-9 10.255M12 3v18"></path>
-                        </svg>
-                    </div>
-                    <div>
-                        <h2 class="text-lg font-bold text-gray-900">Job Portal</h2>
-                        <p class="text-xs text-gray-500">{{ auth()->user()->name }}</p>
-                    </div>
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow transition">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-orange-500 rounded-lg p-3">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Total</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $interviewsCount }}</p>
                 </div>
             </div>
+        </div>
 
-            <nav class="flex-1 p-4 space-y-1.5 overflow-y-auto">
-                <a href="{{ route('user.dashboard') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 00-1 1v10a1 1 0 001 1h6a1 1 0 001-1V10a1 1 0 00-1-1h-6z"></path>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow transition">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-yellow-500 rounded-lg p-3">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-
-                <a href="{{ route('jobs.index') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                    <span class="font-medium">Find Jobs</span>
-                </a>
-
-                <a href="{{ route('user.applications') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                    </svg>
-                    <span class="font-medium">My Applications</span>
-                </a>
-
-                <a href="{{ route('user.saved-jobs') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path>
-                    </svg>
-                    <span class="font-medium">Saved Jobs</span>
-                </a>
-
-                <a href="{{ route('user.interviews') }}" class="flex items-center space-x-3 px-4 py-3 text-indigo-700 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                    </svg>
-                    <span class="font-medium">Interviews</span>
-                </a>
-
-                <a href="{{ route('profile.edit') }}" class="flex items-center space-x-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-gray-100 transition-colors">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
-                    </svg>
-                    <span class="font-medium">My Profile</span>
-                </a>
-            </nav>
-
-            <div class="p-4 border-t border-gray-200">
-                <form method="POST" action="{{ route('logout') }}" class="w-full">
-                    @csrf
-                    <button type="submit" class="w-full flex items-center justify-center space-x-3 px-4 py-3 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                        </svg>
-                        <span class="font-medium">Logout</span>
-                    </button>
-                </form>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Upcoming</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $upcomingInterviewsCount }}</p>
+                </div>
             </div>
         </div>
-    </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 overflow-y-auto">
-        <div class="p-6 md:p-8">
-            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Interviews</h1>
-            <p class="text-gray-600 mb-8">Upcoming interviews and scheduled meetings</p>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow transition">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-green-500 rounded-lg p-3">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Completed</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $completedInterviewsCount }}</p>
+                </div>
+            </div>
+        </div>
 
-            <div class="bg-white rounded-xl shadow-sm border border-gray-200 divide-y divide-gray-200">
-                @forelse (range(1,3) as $i)
-                    <div class="px-6 py-5 hover:bg-gray-50 transition-colors">
-                        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                            <div>
-                                <h3 class="text-lg font-medium text-gray-900">UI/UX Designer Interview</h3>
-                                <p class="text-gray-600">Creative Minds Studio</p>
-                                <div class="mt-3 space-y-2 text-sm">
-                                    <div class="flex items-center text-gray-700">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                                        </svg>
-                                        <span>Tomorrow at 10:30 AM</span>
-                                    </div>
-                                    <div class="flex items-center text-gray-700">
-                                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        </svg>
-                                        <span>Google Meet • Online</span>
-                                    </div>
-                                    <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                        Scheduled
-                                    </span>
+        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow transition">
+            <div class="flex items-center">
+                <div class="flex-shrink-0 bg-red-500 rounded-lg p-3">
+                    <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+                <div class="ml-4">
+                    <p class="text-sm font-medium text-gray-500">Cancelled</p>
+                    <p class="text-2xl font-bold text-gray-900">{{ $cancelledInterviewsCount }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Interview Button -->
+    <div class="mb-6">
+        <a href="{{ route('user.interviews.create') }}" class="inline-flex items-center px-6 py-3 bg-orange-600 text-white font-medium rounded-xl hover:bg-orange-700 transition-colors">
+            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+            </svg>
+            Schedule New Interview
+        </a>
+    </div>
+
+    <!-- Interviews Table -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">All Interviews</h2>
+        </div>
+        
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Job</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @forelse ($interviews as $interview)
+                        <tr class="hover:bg-gray-50 transition-colors">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ $interview->job_title }}</div>
+                                @if($interview->job)
+                                    <div class="text-xs text-gray-500">ID: #{{ $interview->job->id }}</div>
+                                @endif
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ $interview->company }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    @if($interview->type == 'Video Call') bg-blue-100 text-blue-800
+                                    @elseif($interview->type == 'Phone Call') bg-green-100 text-green-800
+                                    @else bg-purple-100 text-purple-800 @endif">
+                                    {{ $interview->type }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                <div>{{ $interview->date->format('M d, Y') }}</div>
+                                <div class="text-xs text-gray-500">{{ $interview->time->format('h:i A') }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                    @if($interview->status == 'upcoming') bg-yellow-100 text-yellow-800
+                                    @elseif($interview->status == 'completed') bg-green-100 text-green-800
+                                    @elseif($interview->status == 'cancelled') bg-red-100 text-red-800
+                                    @else bg-gray-100 text-gray-800 @endif">
+                                    {{ ucfirst($interview->status) }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex justify-end space-x-2">
+                                    <a href="{{ route('user.interviews.show', $interview) }}" class="text-orange-600 hover:text-orange-900">View</a>
+                                    <a href="{{ route('user.interviews.edit', $interview) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                                    <form action="{{ route('user.interviews.destroy', $interview) }}" method="POST" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-900" onclick="return confirm('Are you sure you want to delete this interview?')">
+                                            Delete
+                                        </button>
+                                    </form>
                                 </div>
-                            </div>
-                            <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
-                                <a href="#" class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">Add to Calendar</a>
-                                <a href="#" class="text-gray-600 hover:text-gray-900 text-sm font-medium">View Details</a>
-                            </div>
-                        </div>
-                    </div>
-                @empty
-                    <div class="px-6 py-16 text-center">
-                        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <h3 class="mt-4 text-lg font-medium text-gray-900">No upcoming interviews</h3>
-                        <p class="mt-2 text-gray-500">Once you get interview invites, they will appear here.</p>
-                    </div>
-                @endforelse
-            </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center text-gray-500">
+                                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                                <p class="mt-4">No interviews scheduled yet</p>
+                                <p class="text-sm text-gray-400 mt-2">Click "Schedule New Interview" to get started</p>
+                            </td>
+                        </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
-    </main>
-
+    </div>
 </div>
 @endsection

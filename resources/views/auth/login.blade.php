@@ -19,7 +19,7 @@
             </p>
         </div>
 
-        <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}">
+        <form class="mt-8 space-y-6" method="POST" action="{{ route('login') }}" enctype='multipart-form'>
             @csrf
             @if ($errors->any())
                 <div class="rounded-md bg-red-50 p-4">

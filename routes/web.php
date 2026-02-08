@@ -36,9 +36,21 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
         Route::get('/applications', [UserDashboardController::class, 'applications'])->name('applications');
         Route::get('/saved-jobs', [UserDashboardController::class, 'savedJobs'])->name('saved-jobs');
-        Route::get('/interviews', [UserDashboardController::class, 'interviews'])->name('interviews');
+        Route::post('/saved-jobs/{job}', [UserDashboardController::class, 'saveJob'])->name('saved-jobs.save');
+        Route::delete('/saved-jobs/{job}', [UserDashboardController::class, 'removeSavedJob'])->name('saved-jobs.remove');
         Route::get('/resume', [UserDashboardController::class, 'resume'])->name('resume');
         Route::get('/job-alerts', [UserDashboardController::class, 'jobAlerts'])->name('job-alerts');
+    });
+
+    // User interviews (CRUD)
+    Route::prefix('user/interviews')->name('user.interviews.')->group(function () {
+        Route::get('/', [InterviewController::class, 'index'])->name('index');
+        Route::get('/create', [InterviewController::class, 'create'])->name('create');
+        Route::post('/', [InterviewController::class, 'store'])->name('store');
+        Route::get('/{interview}', [InterviewController::class, 'show'])->name('show');
+        Route::get('/{interview}/edit', [InterviewController::class, 'edit'])->name('edit');
+        Route::put('/{interview}', [InterviewController::class, 'update'])->name('update');
+        Route::delete('/{interview}', [InterviewController::class, 'destroy'])->name('destroy');
     });
 
     // Authenticated job actions (post/edit/delete)
@@ -47,13 +59,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');
     Route::put('/jobs/{job}', [JobController::class, 'update'])->name('jobs.update');
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
-
-    // Interviews (user side)
-    Route::prefix('interviews')->name('interviews.')->group(function () {
-        Route::get('/', [InterviewController::class, 'index'])->name('index');
-        Route::get('/create', [InterviewController::class, 'create'])->name('create');
-        Route::post('/', [InterviewController::class, 'store'])->name('store');
-    });
 });
 
 // Admin area – protected by auth + admin middleware
@@ -64,6 +69,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Admin Jobs Management (CRUD)
     Route::resource('jobs', AdminJobController::class);
+    Route::post('jobs/{job}/extend-deadline', [AdminJobController::class, 'extendDeadline'])->name('jobs.extend-deadline');
 
     // Admin Users Management (CRUD)
     Route::resource('users', UserController::class);

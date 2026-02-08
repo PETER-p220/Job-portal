@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('interviews', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('job_id')->nullable()->constrained()->onDelete('cascade');
+            $table->foreignId('job_id')->nullable()->constrained('job_postings')->onDelete('cascade');
             $table->string('job_title');
             $table->string('company');
             $table->enum('type', ['Video Call', 'Phone Call', 'In-Person']);
