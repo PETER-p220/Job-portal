@@ -9,60 +9,66 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
+use App\Http\Controllers\Admin\AdminJobController;
 use Illuminate\Support\Facades\Route;
 
+// Public routes
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// IMPORTANT: Define /jobs/create BEFORE /jobs/{job} to avoid route conflicts
+Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
+Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
 
+// Authentication routes (Breeze / default)
+require __DIR__.'/auth.php';
+
+// Authenticated user routes
 Route::middleware('auth')->group(function () {
+    // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
-// Job Routes (Public)
-Route::get('/jobs', [JobController::class, 'index'])->name('jobs.index');
-Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
+    // User dashboard & related pages
+    Route::prefix('user')->name('user.')->group(function () {
+        Route::get('/dashboard', [UserDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/applications', [UserDashboardController::class, 'applications'])->name('applications');
+        Route::get('/saved-jobs', [UserDashboardController::class, 'savedJobs'])->name('saved-jobs');
+        Route::get('/interviews', [UserDashboardController::class, 'interviews'])->name('interviews');
+        Route::get('/resume', [UserDashboardController::class, 'resume'])->name('resume');
+        Route::get('/job-alerts', [UserDashboardController::class, 'jobAlerts'])->name('job-alerts');
+    });
 
-// Job Management (Authenticated)
-Route::middleware(['auth'])->group(function () {
-    Route::get('/jobs/create', [JobController::class, 'create'])->name('jobs.create');
+    // Authenticated job actions (post/edit/delete)
+    // Note: /jobs/create is already defined above for public access
     Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
     Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');
     Route::put('/jobs/{job}', [JobController::class, 'update'])->name('jobs.update');
     Route::delete('/jobs/{job}', [JobController::class, 'destroy'])->name('jobs.destroy');
+
+    // Interviews (user side)
+    Route::prefix('interviews')->name('interviews.')->group(function () {
+        Route::get('/', [InterviewController::class, 'index'])->name('index');
+        Route::get('/create', [InterviewController::class, 'create'])->name('create');
+        Route::post('/', [InterviewController::class, 'store'])->name('store');
+    });
 });
 
-// Dashboard Routes with Authentication
-Route::middleware(['auth'])->group(function () {
-    Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
-    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
-});
+// Admin area – protected by auth + admin middleware
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
 
-// Admin User Management Routes
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{user}', [UserController::class, 'show'])->name('users.show');
-    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.destroy');
-    
-    // Admin Reports and Settings
+    // Admin Dashboard
+    Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+    // Admin Jobs Management (CRUD)
+    Route::resource('jobs', AdminJobController::class);
+
+    // Admin Users Management (CRUD)
+    Route::resource('users', UserController::class);
+
+    // Reports & Settings
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings', [SettingController::class, 'update'])->name('settings.update');
 });
-
-// User Interview Routes
-Route::middleware(['auth'])->prefix('interviews')->name('interviews.')->group(function () {
-    Route::get('/', [InterviewController::class, 'index'])->name('index');
-    Route::get('/create', [InterviewController::class, 'create'])->name('create');
-    Route::post('/', [InterviewController::class, 'store'])->name('store');
-});
-
-require __DIR__.'/auth.php';

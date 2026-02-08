@@ -11,7 +11,7 @@ class SettingController extends Controller
         // Get current settings - in a real app, these would come from database or config
         $settings = [
             'site_name' => config('app.name', 'Job Board'),
-            'site_email' => 'admin@jobboard.com',
+            'site_email' => 'admin@OBY.com',
             'auto_approve_jobs' => false,
             'allow_remote_jobs' => true,
             'require_moderation' => false,

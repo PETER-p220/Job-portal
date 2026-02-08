@@ -10,7 +10,7 @@ class Job extends Model
     
     protected $fillable = [
         'title', 'company', 'location', 'description', 'salary', 'type',
-        'experience_level', 'apply_url', 'email', 'user_id', 'is_active',
+        'experience_level', 'deadline', 'apply_url', 'image', 'email', 'user_id', 'is_active',
     ];
 
     public function user()

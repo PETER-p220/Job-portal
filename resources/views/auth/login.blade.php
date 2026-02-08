@@ -8,7 +8,7 @@
                 <svg class="h-12 w-12 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A9.002 9.002 0 0112 21a9.002 9.002 0 01-9-7.745M21 13.255A9.002 9.002 0 0012 3a9.002 9.002 0 00-9 10.255M12 3v18"></path>
                 </svg>
-                <span class="text-2xl font-bold text-gray-900">JobBoard</span>
+                <span class="text-2xl font-bold text-gray-900">OBY</span>
             </div>
             <h2 class="text-3xl font-bold text-gray-900">Sign in to your account</h2>
             <p class="mt-2 text-sm text-gray-600">
@@ -120,7 +120,7 @@
                         <div class="w-full border-t border-gray-300"></div>
                     </div>
                     <div class="relative flex justify-center text-sm">
-                        <span class="px-2 bg-gray-50 text-gray-500">New to JobBoard?</span>
+                        <span class="px-2 bg-gray-50 text-gray-500">New to OBY?</span>
                     </div>
                 </div>
 
