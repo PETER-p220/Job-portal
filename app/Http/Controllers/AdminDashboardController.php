@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Interview;
 use App\Models\Job;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -16,10 +17,33 @@ class AdminDashboardController extends Controller
         $pendingJobs = Job::where('is_active', false)->count();
         $totalUsers = User::count();
         
-        // Get recent jobs for the table
+        // Interview statistics
+        $totalInterviews = Interview::count();
+        $upcomingInterviews = Interview::where('status', 'upcoming')->count();
+        $todayInterviews = Interview::whereDate('date', today())->count();
+        $completedInterviews = Interview::where('status', 'completed')->count();
+        
+        // Get recent jobs for table
         $recentJobs = Job::latest()->take(10)->get();
+        
+        // Get recent interviews for table
+        $recentInterviews = Interview::with(['user', 'job'])
+            ->latest()
+            ->take(5)
+            ->get();
 
-        return view('admin.dashboard', compact('totalJobs', 'activeJobs', 'pendingJobs', 'totalUsers', 'recentJobs'));
+        return view('admin.dashboard', compact(
+            'totalJobs', 
+            'activeJobs', 
+            'pendingJobs', 
+            'totalUsers',
+            'totalInterviews',
+            'upcomingInterviews', 
+            'todayInterviews',
+            'completedInterviews',
+            'recentJobs', 
+            'recentInterviews'
+        ));
     }
 
     public function create()

@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminInterviewController;
 use App\Http\Controllers\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminJobController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InterviewController;
 use App\Http\Controllers\JobController;
@@ -9,7 +11,6 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
-use App\Http\Controllers\Admin\AdminJobController;
 use Illuminate\Support\Facades\Route;
 
 // Public routes
@@ -66,6 +67,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
 
     // Admin Users Management (CRUD)
     Route::resource('users', UserController::class);
+
+    // Admin Interviews Management (CRUD)
+    Route::resource('interviews', AdminInterviewController::class);
 
     // Reports & Settings
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

@@ -2,54 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Interview;
 use Illuminate\Http\Request;
 
 class InterviewController extends Controller
 {
     public function index()
     {
-        // Mock interview data - in a real app, this would come from a database
-        $interviews = [
-            [
-                'id' => 1,
-                'job_title' => 'Senior Frontend Developer',
-                'company' => 'Tech Corp',
-                'type' => 'Video Call',
-                'date' => '2026-02-08',
-                'time' => '14:00',
-                'duration' => '60',
-                'status' => 'upcoming',
-                'meeting_link' => 'https://zoom.us/j/123456789'
-            ],
-            [
-                'id' => 2,
-                'job_title' => 'Full Stack Engineer',
-                'company' => 'StartupXYZ',
-                'type' => 'Phone Call',
-                'date' => '2026-02-10',
-                'time' => '10:00',
-                'duration' => '30',
-                'status' => 'upcoming',
-                'meeting_link' => 'tel:+1234567890'
-            ],
-            [
-                'id' => 3,
-                'job_title' => 'React Developer',
-                'company' => 'Digital Agency',
-                'type' => 'In-Person',
-                'date' => '2026-02-15',
-                'time' => '14:00',
-                'duration' => '90',
-                'status' => 'upcoming',
-                'meeting_link' => '123 Main St, City, State'
-            ]
-        ];
+        $interviews = Interview::where('user_id', auth()->id())
+            ->with('job')
+            ->orderBy('date', 'asc')
+            ->orderBy('time', 'asc')
+            ->get();
 
         $stats = [
-            'upcoming' => 3,
-            'completed' => 12,
-            'pending' => 2,
-            'this_week' => 5
+            'upcoming' => Interview::where('user_id', auth()->id())->where('status', 'upcoming')->count(),
+            'completed' => Interview::where('user_id', auth()->id())->where('status', 'completed')->count(),
+            'pending' => Interview::where('user_id', auth()->id())->where('status', 'pending')->count(),
+            'this_week' => Interview::where('user_id', auth()->id())
+                ->whereBetween('date', [now()->startOfWeek(), now()->endOfWeek()])
+                ->count()
         ];
 
         return view('user.interviews.index', compact('interviews', 'stats'));
@@ -62,22 +34,70 @@ class InterviewController extends Controller
 
     public function store(Request $request)
     {
-        // Validate and store interview
         $validated = $request->validate([
+            'job_id' => 'nullable|exists:job_postings,id',
             'job_title' => 'required|string|max:255',
             'company' => 'required|string|max:255',
             'type' => 'required|in:Video Call,Phone Call,In-Person',
-            'date' => 'required|date',
-            'time' => 'required|string',
-            'duration' => 'required|integer',
-            'meeting_link' => 'required|string',
-            'notes' => 'nullable|string'
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|date_format:H:i',
+            'duration' => 'required|integer|min:15|max:480',
+            'meeting_link' => 'required|string|max:500',
+            'notes' => 'nullable|string|max:1000'
         ]);
 
-        // In a real app, save to database
-        // Interview::create($validated + ['user_id' => auth()->id()]);
+        Interview::create($validated + [
+            'user_id' => auth()->id(),
+            'status' => 'upcoming'
+        ]);
 
-        return redirect()->route('interviews.index')
+        return redirect()->route('user.interviews')
             ->with('success', 'Interview scheduled successfully!');
+    }
+
+    public function edit(Interview $interview)
+    {
+        if ($interview->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        return view('user.interviews.edit', compact('interview'));
+    }
+
+    public function update(Request $request, Interview $interview)
+    {
+        if ($interview->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $validated = $request->validate([
+            'job_id' => 'nullable|exists:job_postings,id',
+            'job_title' => 'required|string|max:255',
+            'company' => 'required|string|max:255',
+            'type' => 'required|in:Video Call,Phone Call,In-Person',
+            'date' => 'required|date|after_or_equal:today',
+            'time' => 'required|date_format:H:i',
+            'duration' => 'required|integer|min:15|max:480',
+            'meeting_link' => 'required|string|max:500',
+            'notes' => 'nullable|string|max:1000',
+            'status' => 'required|in:upcoming,completed,cancelled,pending'
+        ]);
+
+        $interview->update($validated);
+
+        return redirect()->route('user.interviews')
+            ->with('success', 'Interview updated successfully!');
+    }
+
+    public function destroy(Interview $interview)
+    {
+        if ($interview->user_id !== auth()->id()) {
+            abort(403);
+        }
+
+        $interview->delete();
+
+        return redirect()->route('user.interviews')
+            ->with('success', 'Interview cancelled successfully!');
     }
 }
