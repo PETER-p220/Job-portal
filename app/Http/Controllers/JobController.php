@@ -31,6 +31,11 @@ class JobController extends Controller
             $query->where('experience_level', $request->experience);
         }
 
+        // Filter by application method
+        if ($request->filled('application_method') && in_array($request->application_method, ['email', 'whatsapp', 'external_site', 'phone'])) {
+            $query->where('application_method', $request->application_method);
+        }
+
         // Optional: You can add location filter later if you want
         // if ($request->filled('location')) {
         //     $query->where('location', 'like', "%{$request->location}%");

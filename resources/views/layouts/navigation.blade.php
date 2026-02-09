@@ -6,12 +6,14 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('jobs.index') }}" class="flex items-center space-x-3">
-                        <div class="h-10 w-10 bg-orange-600 rounded-lg flex items-center justify-center">
-                            <svg class="h-6 w-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A9.002 9.002 0 0112 21a9.002 9.002 0 01-9-7.745M21 13.255A9.002 9.002 0 0012 3a9.002 9.002 0 00-9 10.255M12 3v18"></path>
-                            </svg>
-                        </div>
-                        <span class="text-xl font-bold text-gray-900">Job Portal</span>
+                                        <div class="flex items-center space-x-3">
+                    <div class="bg-orange-100 rounded-xl p-2 sm:p-3 shadow-md">
+                        <img src="{{ asset('assets/images/jk.png') }}" alt="OBY PORTAL" class="h-8 w-8 sm:h-10 sm:w-10 object-contain">
+                    </div>
+                   
+                </div>
+
+                        <span class="text-xl font-bold text-gray-900">Oby Portal</span>
                     </a>
                 </div>
 

@@ -12,6 +12,7 @@ class Job extends Model
     protected $fillable = [
         'title', 'company', 'location', 'description', 'salary', 'type',
         'experience_level', 'deadline', 'apply_url', 'image', 'email', 'user_id', 'is_active',
+        'application_method', 'application_link', 'whatsapp_number', 'phone_number',
     ];
 
     protected $casts = [

@@ -57,7 +57,7 @@ class UserDashboardController extends Controller
     public function savedJobs()
     {
         $user = auth()->user();
-        $savedJobs = $user->savedJobs()->with('company')->latest()->get();
+        $savedJobs = $user->savedJobs()->latest()->paginate(12);
         
         return view('user.saved-jobs', compact('savedJobs'));
     }

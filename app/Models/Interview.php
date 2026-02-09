@@ -12,20 +12,26 @@ class Interview extends Model
         'job_id',
         'job_title',
         'company',
+        'company_image',
         'type',
         'date',
         'time',
         'duration',
         'meeting_link',
         'status',
-        'notes'
+        'notes',
+        'application_method',
+        'application_link',
+        'whatsapp_number',
+        'phone_number',
     ];
 
     protected $casts = [
         'date' => 'date',
         'time' => 'datetime',
         'created_at' => 'datetime',
-        'updated_at' => 'datetime'
+        'updated_at' => 'datetime',
+        'user_id' => 'integer'
     ];
 
     public function user(): BelongsTo

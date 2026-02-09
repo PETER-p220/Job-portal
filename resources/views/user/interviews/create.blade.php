@@ -121,71 +121,67 @@
                     <h2 class="text-lg font-semibold text-gray-900">Interview Details</h2>
                 </div>
                 
-                <form action="{{ route('interviews.store') }}" method="POST" class="p-6">
+                <form action="{{ route('interviews.store') }}" method="POST" enctype="multipart/form-data" class="p-6">
                     @csrf
                     
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Job Title -->
-                        <div>
+                        <!-- Interview Title -->
+                        <div class="md:col-span-2">
                             <label for="job_title" class="block text-sm font-medium text-gray-700 mb-2">
-                                Job Title <span class="text-red-500">*</span>
+                                Interview Title <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="job_title" name="job_title" value="{{ old('job_title') }}" 
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                                   placeholder="e.g., Senior Frontend Developer" required>
+                                   placeholder="e.g., Senior Developer Interview" required>
                             @error('job_title')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Company -->
+                        <!-- Company Name -->
                         <div>
                             <label for="company" class="block text-sm font-medium text-gray-700 mb-2">
                                 Company Name <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="company" name="company" value="{{ old('company') }}" 
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                                   placeholder="e.g., Tech Corp" required>
+                                   placeholder="e.g., Tech Company" required>
                             @error('company')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Interview Type -->
+                        <!-- Company Picture -->
                         <div>
-                            <label for="type" class="block text-sm font-medium text-gray-700 mb-2">
-                                Interview Type <span class="text-red-500">*</span>
+                            <label for="company_image" class="block text-sm font-medium text-gray-700 mb-2">
+                                Company Picture (Optional)
                             </label>
-                            <select id="type" name="type" 
-                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                                    required>
-                                <option value="">Select Interview Type</option>
-                                <option value="Video Call">Video Call</option>
-                                <option value="Phone Call">Phone Call</option>
-                                <option value="In-Person">In-Person</option>
-                            </select>
-                            @error('type')
+                            <input type="file" id="company_image" name="company_image" 
+                                   accept="image/*"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <p class="mt-1 text-sm text-gray-500">Upload company logo or image (JPG, PNG, GIF - Max 2MB)</p>
+                            @error('company_image')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Date -->
+                        <!-- Interview Date -->
                         <div>
                             <label for="date" class="block text-sm font-medium text-gray-700 mb-2">
                                 Interview Date <span class="text-red-500">*</span>
                             </label>
                             <input type="date" id="date" name="date" value="{{ old('date') }}" 
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                                   required>
+                                   min="{{ now()->format('Y-m-d') }}" required>
                             @error('date')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
-                        <!-- Time -->
+                        <!-- Interview Time -->
                         <div>
                             <label for="time" class="block text-sm font-medium text-gray-700 mb-2">
-                                Start Time <span class="text-red-500">*</span>
+                                Interview Time <span class="text-red-500">*</span>
                             </label>
                             <input type="time" id="time" name="time" value="{{ old('time') }}" 
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
@@ -195,35 +191,41 @@
                             @enderror
                         </div>
 
-                        <!-- Duration -->
-                        <div>
-                            <label for="duration" class="block text-sm font-medium text-gray-700 mb-2">
-                                Duration (minutes) <span class="text-red-500">*</span>
-                            </label>
-                            <input type="number" id="duration" name="duration" value="{{ old('duration', 60) }}" 
-                                   min="15" max="240" step="15"
-                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                                   required>
-                            @error('duration')
-                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
-                            @enderror
-                        </div>
-
                         <!-- Meeting Link -->
                         <div class="md:col-span-2">
                             <label for="meeting_link" class="block text-sm font-medium text-gray-700 mb-2">
-                                Meeting Link / Location <span class="text-red-500">*</span>
+                                Meeting Link <span class="text-red-500">*</span>
                             </label>
                             <input type="text" id="meeting_link" name="meeting_link" value="{{ old('meeting_link') }}" 
                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
-                                   placeholder="e.g., https://zoom.us/j/123456789 or 123 Main St, City, State" required>
+                                   placeholder="e.g., https://zoom.us/j/123456789" required>
+                            <p class="mt-1 text-sm text-gray-500">Zoom, Google Meet, or other video conference link</p>
                             @error('meeting_link')
                                 <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                             @enderror
                         </div>
 
+                        <!-- Status -->
+                        <div>
+                            <label for="status" class="block text-sm font-medium text-gray-700 mb-2">
+                                Status <span class="text-red-500">*</span>
+                            </label>
+                            <select id="status" name="status" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                                    required>
+                                <option value="">Select status</option>
+                                <option value="upcoming" {{ old('status') == 'upcoming' ? 'selected' : '' }}>Upcoming</option>
+                                <option value="pending" {{ old('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="completed" {{ old('status') == 'completed' ? 'selected' : '' }}>Completed</option>
+                                <option value="cancelled" {{ old('status') == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                            </select>
+                            @error('status')
+                                <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                            @enderror
+                        </div>
+
                         <!-- Notes -->
-                        <div class="md:col-span-2">
+                        <div>
                             <label for="notes" class="block text-sm font-medium text-gray-700 mb-2">
                                 Notes (Optional)
                             </label>

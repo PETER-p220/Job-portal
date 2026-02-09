@@ -153,14 +153,13 @@
                 <!-- How to Apply Link -->
                 <div>
                     <label for="apply_url" class="block text-sm font-medium text-gray-700 mb-2">
-                        How to Apply Link <span class="text-red-500">*</span>
+                        How to Apply Link
                     </label>
                     <input type="url" 
                            id="apply_url" 
                            name="apply_url" 
                            value="{{ old('apply_url') }}"
                            placeholder="https://example.com/apply"
-                           required
                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
                     @error('apply_url')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
@@ -183,21 +182,94 @@
                     @enderror
                 </div>
 
-                <!-- Contact Email -->
+                <!-- Application Method -->
                 <div>
-                    <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
-                        Contact Email
+                    <label for="application_method" class="block text-sm font-medium text-gray-700 mb-2">
+                        How to Apply <span class="text-red-500">*</span>
                     </label>
-                    <input type="email" 
-                           id="email" 
-                           name="email" 
-                           value="{{ old('email') }}"
-                           placeholder="careers@company.com"
-                           class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
-                    <p class="mt-1 text-sm text-gray-500">Optional: Email for applications or inquiries</p>
-                    @error('email')
+                    <select id="application_method" name="application_method" 
+                            required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <option value="">Select application method</option>
+                        <option value="email" {{ old('application_method') == 'email' ? 'selected' : '' }}>Email</option>
+                        <option value="whatsapp" {{ old('application_method') == 'whatsapp' ? 'selected' : '' }}>WhatsApp</option>
+                        <option value="external_site" {{ old('application_method') == 'external_site' ? 'selected' : '' }}>External Website</option>
+                        <option value="phone" {{ old('application_method') == 'phone' ? 'selected' : '' }}>Phone</option>
+                    </select>
+                    @error('application_method')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
+                </div>
+
+                <!-- Conditional Application Details -->
+                <div id="application-details">
+                    <!-- Email Field -->
+                    <div class="email-field" style="display: none;">
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
+                            Contact Email
+                        </label>
+                        <input type="email" 
+                               id="email" 
+                               name="email" 
+                               value="{{ old('email') }}"
+                               placeholder="careers@company.com"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <p class="mt-1 text-sm text-gray-500">Email for applications or inquiries</p>
+                        @error('email')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- WhatsApp Field -->
+                    <div class="whatsapp-field" style="display: none;">
+                        <label for="whatsapp_number" class="block text-sm font-medium text-gray-700 mb-2">
+                            WhatsApp Number
+                        </label>
+                        <input type="text" 
+                               id="whatsapp_number" 
+                               name="whatsapp_number" 
+                               value="{{ old('whatsapp_number') }}"
+                               placeholder="+255123456789"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <p class="mt-1 text-sm text-gray-500">WhatsApp number for applications</p>
+                        @error('whatsapp_number')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- External Site Field -->
+                    <div class="external_site-field" style="display: none;">
+                        <label for="application_link" class="block text-sm font-medium text-gray-700 mb-2">
+                            Application Website
+                        </label>
+                        <input type="url" 
+                               id="application_link" 
+                               name="application_link" 
+                               value="{{ old('application_link') }}"
+                               placeholder="https://company.com/careers"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <p class="mt-1 text-sm text-gray-500">External website for applications</p>
+                        @error('application_link')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="phone-field" style="display: none;">
+                        <label for="phone_number" class="block text-sm font-medium text-gray-700 mb-2">
+                            Phone Number
+                        </label>
+                        <input type="tel" 
+                               id="phone_number" 
+                               name="phone_number" 
+                               value="{{ old('phone_number') }}"
+                               placeholder="+255123456789"
+                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-indigo-500 focus:border-indigo-500">
+                        <p class="mt-1 text-sm text-gray-500">Phone number for applications</p>
+                        @error('phone_number')
+                            <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        @enderror
+                    </div>
                 </div>
 
                 <!-- Active Status -->
@@ -228,4 +300,44 @@
         </form>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const applicationMethod = document.getElementById('application_method');
+    const emailField = document.querySelector('.email-field');
+    const whatsappField = document.querySelector('.whatsapp-field');
+    const externalSiteField = document.querySelector('.external_site-field');
+    const phoneField = document.querySelector('.phone-field');
+    
+    function showApplicationFields() {
+        // Hide all fields first
+        if (emailField) emailField.style.display = 'none';
+        if (whatsappField) whatsappField.style.display = 'none';
+        if (externalSiteField) externalSiteField.style.display = 'none';
+        if (phoneField) phoneField.style.display = 'none';
+        
+        // Show relevant field based on selection
+        switch (applicationMethod.value) {
+            case 'email':
+                if (emailField) emailField.style.display = 'block';
+                break;
+            case 'whatsapp':
+                if (whatsappField) whatsappField.style.display = 'block';
+                break;
+            case 'external_site':
+                if (externalSiteField) externalSiteField.style.display = 'block';
+                break;
+            case 'phone':
+                if (phoneField) phoneField.style.display = 'block';
+                break;
+        }
+    }
+    
+    // Initial call
+    showApplicationFields();
+    
+    // Listen for changes
+    applicationMethod.addEventListener('change', showApplicationFields);
+});
+</script>
 @endsection

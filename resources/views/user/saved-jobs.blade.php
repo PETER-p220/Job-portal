@@ -60,7 +60,7 @@
                             @endif
 
                             <div class="text-base text-gray-500">
-                                Saved {{ $job->saved_at->diffForHumans() ?? $job->created_at->diffForHumans() }}
+                                Saved {{ $job->saved_at ? $job->saved_at->diffForHumans() : $job->created_at->diffForHumans() }}
                             </div>
                         </div>
 

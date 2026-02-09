@@ -7,7 +7,7 @@
     <!-- Header -->
     <div class="mb-10">
         <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-        <p class="mt-2 text-gray-600">Welcome back, {{ auth()->user()->name }} • Full control over job portal</p>
+        <p class="mt-2 text-gray-600">Welcome back, {{ auth()->user()->name }} • Full control over Oby Portal</p>
     </div>
 
     <!-- Stats Overview -->

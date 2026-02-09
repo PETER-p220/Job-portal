@@ -75,7 +75,13 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('users', UserController::class);
 
     // Admin Interviews Management (CRUD)
-    Route::resource('interviews', AdminInterviewController::class);
+    Route::get('/interviews', [AdminInterviewController::class, 'index'])->name('interviews.index');
+    Route::get('/interviews/create', [AdminInterviewController::class, 'create'])->name('interviews.create');
+    Route::post('/interviews', [AdminInterviewController::class, 'store'])->name('interviews.store');
+    Route::get('/interviews/{interview}', [AdminInterviewController::class, 'show'])->name('interviews.show');
+    Route::get('/interviews/{interview}/edit', [AdminInterviewController::class, 'edit'])->name('interviews.edit');
+    Route::put('/interviews/{interview}', [AdminInterviewController::class, 'update'])->name('interviews.update');
+    Route::delete('/interviews/{interview}', [AdminInterviewController::class, 'destroy'])->name('interviews.destroy');
 
     // Reports & Settings
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');

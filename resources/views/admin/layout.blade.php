@@ -9,8 +9,11 @@
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     
-    <!-- Styles -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Vite Assets -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-orange-50">
     <div class="flex h-screen">
@@ -34,7 +37,7 @@
                             <span id="sidebar-text" class="hidden h-6 w-6 flex items-center justify-center text-orange-600 font-bold text-sm">OBY</span>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-white">OBY JOB PORTAL</h2>
+                            <h2 class="text-lg font-bold text-white">OBY Oby Portal</h2>
                             <p class="text-xs text-orange-200">@if(auth()->check()){{ auth()->user()->name }}@endif</p>
                         </div>
                     </div>
