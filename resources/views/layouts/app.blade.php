@@ -47,5 +47,28 @@
 
     </div>
 
+    <script>
+        // Prevent double-click on all forms
+        document.addEventListener('DOMContentLoaded', function() {
+            const forms = document.querySelectorAll('form');
+            forms.forEach(form => {
+                form.addEventListener('submit', function() {
+                    const submitBtn = form.querySelector('button[type="submit"]');
+                    if (submitBtn && !submitBtn.disabled) {
+                        submitBtn.disabled = true;
+                        const originalText = submitBtn.innerHTML;
+                        submitBtn.innerHTML = 'Processing...';
+                        
+                        // Re-enable after 10 seconds in case of error
+                        setTimeout(() => {
+                            submitBtn.disabled = false;
+                            submitBtn.innerHTML = originalText;
+                        }, 10000);
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>

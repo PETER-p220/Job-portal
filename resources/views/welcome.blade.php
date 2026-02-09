@@ -3,6 +3,40 @@
 @section('content')
 <div class="min-h-screen bg-gray-50">
 
+    <!-- Header Section -->
+    <header class="bg-white shadow-sm border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-6">
+                <div class="flex items-center space-x-3">
+                    <div class="bg-orange-100 rounded-xl p-3 shadow-md">
+                        <img src="{{ asset('assets/images/jk.png') }}" alt="OBY JOB PORTAL" class="h-10 w-10 object-contain">
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">OBY JOB PORTAL</h1>
+                        <p class="text-sm text-gray-600">Your Career Gateway</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    @auth
+                        <a href="{{ auth()->user()->role === 'admin' ? route('admin.dashboard') : route('user.dashboard') }}" 
+                           class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium">
+                            Go to Dashboard
+                        </a>
+                    @else
+                        <a href="{{ route('login') }}" 
+                           class="text-gray-700 hover:text-orange-600 font-medium transition">
+                            Sign In
+                        </a>
+                        <a href="{{ route('register') }}" 
+                           class="bg-orange-600 text-white px-6 py-3 rounded-lg hover:bg-orange-700 transition font-medium">
+                            Register
+                        </a>
+                    @endauth
+                </div>
+            </div>
+        </div>
+    </header>
+
     <!-- Hero Section -->
     <section class="relative bg-gradient-to-br from-orange-600 via-orange-500 to-orange-700 text-white overflow-hidden">
         <div class="absolute inset-0 opacity-10">

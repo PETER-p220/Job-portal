@@ -14,20 +14,28 @@
 </head>
 <body class="bg-orange-50">
     <div class="flex h-screen">
+        <!-- Mobile Menu Toggle -->
+        <button onclick="toggleMobileSidebar()" 
+                class="lg:hidden fixed top-4 left-4 z-50 p-3 bg-orange-600 text-white rounded-lg shadow-lg hover:bg-orange-700 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+        </button>
+
         <!-- Sidebar -->
-        <aside class="w-64 bg-orange-600 shadow-lg">
+        <aside id="mobile-sidebar" class="w-64 bg-orange-600 shadow-lg flex-shrink-0 fixed inset-y-0 left-0 transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:inset-0 lg:block z-40">
             <div class="flex flex-col h-full">
                 <!-- Logo Section -->
                 <div class="p-6 border-b border-orange-500">
                     <div class="flex items-center space-x-3">
-                        <div class="bg-white rounded-lg p-2">
-                            <svg class="h-6 w-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A9.002 9.002 0 0112 21a9.002 9.002 0 01-9-7.745M21 13.255A9.002 9.002 0 0012 3a9.002 9.002 0 00-9 10.255M12 3v18"></path>
-                            </svg>
+                        <div class="bg-white rounded-lg p-2 cursor-pointer hover:bg-orange-50 transition-colors" 
+                             onclick="toggleLogoDisplay(this)" title="Toggle Logo/Text">
+                            <img id="sidebar-logo" src="{{ asset('assets/images/jk.png') }}" alt="OBY Jobs Logo" class="h-6 w-6 object-contain">
+                            <span id="sidebar-text" class="hidden h-6 w-6 flex items-center justify-center text-orange-600 font-bold text-sm">OBY</span>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-white">Job Portal</h2>
-                            <p class="text-xs text-orange-200">Admin Panel</p>
+                            <h2 class="text-lg font-bold text-white">OBY JOB PORTAL</h2>
+                            <p class="text-xs text-orange-200">@if(auth()->check()){{ auth()->user()->name }}@endif</p>
                         </div>
                     </div>
                 </div>
@@ -107,12 +115,58 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 overflow-y-auto">
+        <main class="flex-1 overflow-y-auto lg:ml-0">
+            <!-- Mobile Sidebar Overlay -->
+            <div id="sidebar-overlay" onclick="closeMobileSidebar()" 
+                 class="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-30 hidden"></div>
+            
             @yield('content')
         </main>
     </div>
 
     <!-- Scripts -->
     @vite(['resources/js/app.js'])
+
+    <script>
+        function toggleLogoDisplay(element) {
+            const logo = document.getElementById('sidebar-logo');
+            const text = document.getElementById('sidebar-text');
+            
+            if (logo.classList.contains('hidden')) {
+                logo.classList.remove('hidden');
+                text.classList.add('hidden');
+            } else {
+                logo.classList.add('hidden');
+                text.classList.remove('hidden');
+            }
+        }
+
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('hidden');
+        }
+
+        function closeMobileSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+        }
+
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('mobile-sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            const toggleButton = event.target.closest('button[onclick="toggleMobileSidebar()"]');
+            
+            if (!sidebar.contains(event.target) && !toggleButton && !sidebar.classList.contains('-translate-x-full')) {
+                closeMobileSidebar();
+            }
+        });
+    </script>
 </body>
 </html>
