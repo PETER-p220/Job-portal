@@ -201,6 +201,135 @@
         </div>
     </section>
 
+    <!-- Featured Interviews -->
+    <section class="py-12 sm:py-16 md:py-24 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10 sm:mb-16">
+                <h2 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-900 mb-3 sm:mb-5">Upcoming Interviews</h2>
+                <p class="text-base sm:text-lg md:text-xl text-gray-600 max-w-3xl mx-auto px-4">
+                    Schedule your interview opportunities with leading employers
+                </p>
+            </div>
+
+            @if(isset($featuredInterviews) && $featuredInterviews->count() > 0)
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-10">
+                    @foreach($featuredInterviews as $interview)
+                        <div class="group bg-white rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 border border-gray-100 overflow-hidden transform hover:-translate-y-1">
+                            <div class="p-5 sm:p-6 md:p-8">
+                                <div class="flex flex-col sm:flex-row items-start justify-between mb-4 sm:mb-6 gap-3">
+                                    <div class="flex-1 w-full">
+                                        <h3 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors line-clamp-2 leading-tight mb-2">
+                                            @auth
+                                                <a href="{{ route('user.interviews.show', $interview) }}">
+                                                    {{ $interview->job_title }}
+                                                </a>
+                                            @else
+                                                <button 
+                                                    onclick="showLoginModal()"
+                                                    type="button"
+                                                    class="text-left w-full hover:text-orange-600">
+                                                    {{ $interview->job_title }}
+                                                </button>
+                                            @endauth
+                                        </h3>
+                                        <p class="text-base sm:text-lg md:text-xl font-semibold text-orange-600">{{ $interview->company }}</p>
+                                    </div>
+
+                                    <span class="inline-flex px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 text-xs sm:text-sm font-bold rounded-full shadow-sm whitespace-nowrap
+                                        {{ match($interview->status) {
+                                            'upcoming' => 'bg-green-100 text-green-800 border border-green-200',
+                                            'completed' => 'bg-blue-100 text-blue-800 border border-blue-200',
+                                            'pending' => 'bg-yellow-100 text-yellow-800 border border-yellow-200',
+                                            'cancelled' => 'bg-red-100 text-red-800 border border-red-200',
+                                            default => 'bg-gray-100 text-gray-800 border border-gray-200'
+                                        } }}">
+                                        {{ ucfirst($interview->status) }}
+                                    </span>
+                                </div>
+
+                                <div class="space-y-3 sm:space-y-4 text-gray-700 mb-6 sm:mb-8">
+                                    <div class="flex items-center text-sm sm:text-base">
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span>{{ $interview->date->format('M j, Y') }}</span>
+                                    </div>
+
+                                    <div class="flex items-center text-sm sm:text-base">
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                        </svg>
+                                        <span>{{ $interview->time->format('g:i A') }}</span>
+                                    </div>
+
+                                    @if($interview->type)
+                                    <div class="flex items-center text-sm sm:text-base">
+                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 mr-2 sm:mr-3 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                        </svg>
+                                        <span>{{ $interview->type }}</span>
+                                    </div>
+                                    @endif
+
+                                    <div class="text-sm sm:text-base text-gray-500">
+                                        Scheduled {{ $interview->created_at->diffForHumans() }}
+                                    </div>
+                                </div>
+
+                                <div class="pt-4 sm:pt-6 border-t border-gray-100 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                                    <span class="text-xs sm:text-sm text-gray-500 truncate w-full sm:w-auto">
+                                        {{ $interview->user ? 'by ' . $interview->user->name : '' }}
+                                    </span>
+
+                                    @auth
+                                        <a href="{{ route('user.interviews.show', $interview) }}" 
+                                           class="w-full sm:w-auto text-center inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-orange-50 text-orange-700 font-semibold rounded-lg sm:rounded-xl hover:bg-orange-100 transition text-sm sm:text-base whitespace-nowrap">
+                                            View Details →
+                                        </a>
+                                    @else
+                                        <button onclick="showLoginModal()" 
+                                                type="button"
+                                                class="w-full sm:w-auto text-center inline-flex items-center justify-center px-4 sm:px-6 py-2 sm:py-3 bg-orange-50 text-orange-700 font-semibold rounded-lg sm:rounded-xl hover:bg-orange-100 transition text-sm sm:text-base whitespace-nowrap">
+                                            View Details →
+                                        </button>
+                                    @endauth
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                <div class="text-center mt-10 sm:mt-16">
+                    <a href="{{ route('user.interviews.index') }}" 
+                       class="inline-flex items-center justify-center px-8 sm:px-10 py-3 sm:py-4 md:py-5 bg-orange-600 text-white font-bold text-base sm:text-lg md:text-xl rounded-xl sm:rounded-2xl hover:bg-orange-700 transition-all shadow-lg">
+                        Browse All Interviews
+                        <svg class="ml-2 sm:ml-3 w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+            @else
+                <!-- Empty state -->
+                <div class="text-center py-16 sm:py-20 md:py-24 bg-white rounded-2xl sm:rounded-3xl shadow-lg border border-gray-100">
+                    <svg class="mx-auto h-16 w-16 sm:h-20 sm:w-20 text-orange-400 mb-6 sm:mb-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                    </svg>
+                    <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 px-4">No Interviews Scheduled Yet</h3>
+                    <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto px-4">
+                        We're adding new interview opportunities every day. Check back soon or schedule your first interview!
+                    </p>
+
+                    @auth
+                        <a href="{{ route('user.interviews.create') }}" 
+                           class="inline-flex items-center px-8 sm:px-10 py-3 sm:py-4 md:py-5 bg-orange-600 text-white font-bold text-base sm:text-lg md:text-xl rounded-xl sm:rounded-2xl hover:bg-orange-700 transition-all shadow-lg">
+                            Schedule Your First Interview
+                        </a>
+                    @endauth
+                </div>
+            @endif
+        </div>
+    </section>
+
     <!-- How It Works -->
     <section class="py-12 sm:py-16 md:py-24 bg-gradient-to-b from-white to-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

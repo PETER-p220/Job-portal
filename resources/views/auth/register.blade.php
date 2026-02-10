@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('user.layout')
 
 @section('content')
 <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -6,9 +6,9 @@
         <div class="text-center">
             <div class="flex justify-center items-center space-x-3 mb-6">
                 <div class="bg-white rounded-xl p-3 shadow-md">
-                    <img src="{{ asset('assets/images/jk.png') }}" alt="OBY Oby Portal" class="h-10 w-10 object-contain">
+                    <img src="{{ asset('assets/images/jk.png') }}" alt="Oby Portal" class="h-10 w-10 object-contain">
                 </div>
-                <span class="text-2xl font-bold text-gray-900">OBY Oby Portal</span>
+                <span class="text-2xl font-bold text-gray-900">Oby Portal</span>
             </div>
             <h2 class="text-3xl font-bold text-gray-900">Create your account</h2>
             <p class="mt-2 text-sm text-gray-600">

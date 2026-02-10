@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
+use App\Models\Interview;
 
 class HomeController extends Controller
 {
@@ -14,6 +15,12 @@ class HomeController extends Controller
             ->take(6)
             ->get();
             
-        return view('welcome', compact('featuredJobs'));
+        $featuredInterviews = Interview::where('status', 'upcoming')
+            ->with('user', 'job')
+            ->orderBy('date', 'asc')
+            ->take(6)
+            ->get();
+            
+        return view('welcome', compact('featuredJobs', 'featuredInterviews'));
     }
 }

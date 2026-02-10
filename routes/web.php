@@ -13,7 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
-// Public routes
+// Public routes - accessible without authentication
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
 // IMPORTANT: Define /jobs/create BEFORE /jobs/{job} to avoid route conflicts
@@ -24,7 +24,7 @@ Route::get('/jobs/{job}', [JobController::class, 'show'])->name('jobs.show');
 // Authentication routes (Breeze / default)
 require __DIR__.'/auth.php';
 
-// Authenticated user routes
+// Authenticated user routes - protected by auth middleware
 Route::middleware('auth')->group(function () {
     // Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{interview}', [InterviewController::class, 'destroy'])->name('destroy');
     });
 
-    // Authenticated job actions (post/edit/delete)
+    // Authenticated job actions (post/edit/delete) - protected by auth middleware
     // Note: /jobs/create is already defined above for public access
     Route::post('/jobs', [JobController::class, 'store'])->name('jobs.store');
     Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->name('jobs.edit');

@@ -1,38 +1,34 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav class="bg-white border-b border-gray-100">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('jobs.index') }}" class="flex items-center space-x-3">
-                                        <div class="flex items-center space-x-3">
-                    <div class="bg-orange-100 rounded-xl p-2 sm:p-3 shadow-md">
-                        <img src="{{ asset('assets/images/jk.png') }}" alt="OBY PORTAL" class="h-8 w-8 sm:h-10 sm:w-10 object-contain">
-                    </div>
-                   
-                </div>
-
-                        <span class="text-xl font-bold text-gray-900">Oby Portal</span>
+                    <a href="{{ route('jobs.index') }}" class="flex items-center space-x-2 sm:space-x-3">
+                        <div class="bg-orange-100 rounded-xl p-2 shadow-md">
+                            <img src="{{ asset('assets/images/jk.png') }}" alt="OBY PORTAL" class="h-7 w-7 sm:h-10 sm:w-10 object-contain">
+                        </div>
+                        <span class="text-lg sm:text-xl font-bold text-gray-900">Oby Portal</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <a href="{{ route('jobs.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('jobs.*') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium">
+                <div class="flex space-x-4 sm:space-x-8 ms-6 sm:ms-10 items-center">
+                    <a href="{{ route('jobs.index') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('jobs.*') ? 'border-orange-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-xs sm:text-sm font-medium">
                         Browse Jobs
                     </a>
                     @if(auth()->check())
                         @if(auth()->user()->isAdmin())
-                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.dashboard') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium">
-                                Admin Dashboard
+                            <a href="{{ route('admin.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('admin.dashboard') ? 'border-orange-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-xs sm:text-sm font-medium">
+                                Dashboard
                             </a>
                         @else
-                            <a href="{{ route('user.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('user.dashboard') ? 'border-indigo-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-sm font-medium">
-                                My Dashboard
+                            <a href="{{ route('user.dashboard') }}" class="inline-flex items-center px-1 pt-1 border-b-2 {{ request()->routeIs('user.dashboard') ? 'border-orange-500 text-gray-900' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300' }} text-xs sm:text-sm font-medium">
+                                Dashboard
                             </a>
                         @endif
-                        <a href="{{ route('jobs.create') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 text-sm font-medium">
+                        <a href="{{ route('jobs.create') }}" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 text-xs sm:text-sm font-medium">
                             Post Job
                         </a>
                     @endif
@@ -43,25 +39,25 @@
             <div class="flex items-center">
                 @if(auth()->guest())
                     <!-- Guest Links -->
-                    <div class="hidden space-x-4 sm:flex sm:items-center">
-                        <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+                    <div class="flex items-center space-x-2 sm:space-x-4">
+                        <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-700 px-2 sm:px-3 py-2 rounded-md text-xs sm:text-sm font-medium">
                             Login
                         </a>
-                        <a href="{{ route('register') }}" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700 transition-colors">
-                            Sign Up
+                        <a href="{{ route('register') }}" class="bg-orange-600 text-white px-3 sm:px-4 py-2 rounded-md text-xs sm:text-sm font-medium hover:bg-orange-700 transition-colors">
+                            Register
                         </a>
                     </div>
                 @else
                     <!-- Settings Dropdown -->
-                    <div class="hidden sm:flex sm:items-center sm:ms-6">
+                    <div class="flex items-center">
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
-                                <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                                    <div class="flex items-center space-x-2">
-                                        <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center">
-                                            <span class="text-indigo-600 font-medium text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                <button class="inline-flex items-center px-2 sm:px-3 py-2 border border-transparent text-xs sm:text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                    <div class="flex items-center space-x-1 sm:space-x-2">
+                                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                            <span class="text-orange-600 font-medium text-xs sm:text-sm">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
                                         </div>
-                                        <div>{{ Auth::user()->name }}</div>
+                                        <div class="hidden sm:block">{{ Auth::user()->name }}</div>
                                     </div>
 
                                     <div class="ms-1">
@@ -98,8 +94,8 @@
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
                                         </svg>
-                                            Post New Job
-                                        </div>
+                                        Post New Job
+                                    </div>
                                 </x-dropdown-link>
 
                                 <x-dropdown-link :href="route('profile.edit')">
@@ -107,7 +103,7 @@
                                         <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                                         </svg>
-                                            Profile Settings
+                                        Profile Settings
                                     </div>
                                 </x-dropdown-link>
 
@@ -130,80 +126,7 @@
                         </x-dropdown>
                     </div>
                 @endif
-
-                <!-- Hamburger -->
-                <div class="-me-2 flex items-center sm:hidden">
-                    <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
-                        <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                            <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                            <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                    </button>
-                </div>
             </div>
         </div>
-    </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            <a href="{{ route('jobs.index') }}" class="block pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('jobs.index') ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} text-base font-medium">
-                Browse Jobs
-            </a>
-            
-            @if(auth()->check())
-                @if(auth()->user()->isAdmin())
-                    <a href="{{ route('admin.dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('admin.dashboard') ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} text-base font-medium">
-                        Admin Dashboard
-                    </a>
-                @else
-                    <a href="{{ route('user.dashboard') }}" class="block pl-3 pr-4 py-2 border-l-4 {{ request()->routeIs('user.dashboard') ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300' }} text-base font-medium">
-                        My Dashboard
-                    </a>
-                @endif
-                <a href="{{ route('jobs.create') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 text-base font-medium">
-                    Post Job
-                </a>
-            @endif
-        </div>
-
-        @if(auth()->guest())
-            <!-- Responsive Guest Links -->
-            <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="space-y-1">
-                    <a href="{{ route('login') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 text-base font-medium">
-                        Login
-                    </a>
-                    <a href="{{ route('register') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 text-base font-medium">
-                        Sign Up
-                    </a>
-                </div>
-            </div>
-        @else
-            <!-- Responsive Settings Options -->
-            <div class="pt-4 pb-1 border-t border-gray-200">
-                <div class="px-4">
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-                </div>
-
-                <div class="mt-3 space-y-1">
-                    <a href="{{ route('profile.edit') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 text-base font-medium">
-                        Profile Settings
-                    </a>
-
-                    <!-- Authentication -->
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-
-                        <a href="{{ route('logout') }}" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-gray-600 hover:text-gray-800 hover:bg-gray-50 hover:border-gray-300 text-base font-medium"
-                                onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                            Log Out
-                        </a>
-                    </form>
-                </div>
-            </div>
-        @endif
     </div>
 </nav>

@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'OBY Oby Portal - Dashboard')</title>
+    <title>@yield('title', 'Oby Portal - Dashboard')</title>
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
@@ -38,7 +38,7 @@
                             <span id="sidebar-text" class="hidden h-8 w-8 flex items-center justify-center text-orange-600 font-bold text-lg">OBY</span>
                         </div>
                         <div>
-                            <h2 class="text-xl font-bold text-white">OBY Oby Portal</h2>
+                            <h2 class="text-xl font-bold text-white">Oby Portal</h2>
                             <p class="text-sm text-orange-100 mt-0.5">@if(auth()->check()){{ auth()->user()->name }}@endif</p>
                         </div>
                     </div>

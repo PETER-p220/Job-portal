@@ -37,7 +37,7 @@
                             <span id="sidebar-text" class="hidden h-6 w-6 flex items-center justify-center text-orange-600 font-bold text-sm">OBY</span>
                         </div>
                         <div>
-                            <h2 class="text-lg font-bold text-white">OBY Oby Portal</h2>
+                            <h2 class="text-lg font-bold text-white">Oby Portal</h2>
                             <p class="text-xs text-orange-200">@if(auth()->check()){{ auth()->user()->name }}@endif</p>
                         </div>
                     </div>
