@@ -249,5 +249,24 @@ function shareViaWhatsApp(phoneNumber, message) {
         return false;
     }
 }
+
+function shareInterviewOnWhatsApp(interviewTitle, company, interviewImage, interviewUrl) {
+    // Create a comprehensive message for sharing interviews
+    let message = `🎯 *Interview Opportunity* 🎯\n\n`;
+    message += `📌 *Position:* ${interviewTitle}\n`;
+    message += `🏢 *Company:* ${company}\n`;
+    
+    if (interviewImage) {
+        message += `🖼️ *View Image:* ${window.location.origin}/${interviewImage}\n`;
+    }
+    
+    message += `\n🔗 *View Details & Apply:* ${interviewUrl}\n`;
+    message += `\n💼 *Share this interview opportunity with interested candidates!*`;
+    
+    // Open WhatsApp with the message (no specific number, user can choose recipient)
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    return false;
+}
 </script>
 @endsection

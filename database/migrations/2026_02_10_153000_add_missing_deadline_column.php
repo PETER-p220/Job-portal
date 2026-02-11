@@ -12,18 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('job_postings', function (Blueprint $table) {
-            // Only add columns if they don't already exist
+            // Only add deadline column if it doesn't exist
             if (!Schema::hasColumn('job_postings', 'deadline')) {
                 $table->date('deadline')->nullable()->after('description');
-            }
-            if (!Schema::hasColumn('job_postings', 'apply_url')) {
-                $table->string('apply_url')->nullable()->after('deadline');
-            }
-            if (!Schema::hasColumn('job_postings', 'image')) {
-                $table->string('image')->nullable()->after('apply_url');
-            }
-            if (!Schema::hasColumn('job_postings', 'email')) {
-                $table->string('email')->nullable()->after('image');
             }
         });
     }
@@ -34,7 +25,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('job_postings', function (Blueprint $table) {
-            $table->dropColumn(['deadline', 'apply_url', 'image', 'email']);
+            if (Schema::hasColumn('job_postings', 'deadline')) {
+                $table->dropColumn('deadline');
+            }
         });
     }
 };

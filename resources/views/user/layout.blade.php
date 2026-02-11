@@ -6,6 +6,30 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Oby Portal - Dashboard')</title>
 
+    <!-- Open Graph Meta Tags for WhatsApp Sharing -->
+    @if(request()->routeIs('jobs.show') && isset($job))
+        <meta property="og:title" content="{{ $job->title }} - {{ $job->company }}">
+        <meta property="og:description" content="Great job opportunity at {{ $job->company }}. {{ Str::limit(strip_tags($job->description), 150) }}">
+        <meta property="og:url" content="{{ route('jobs.show', $job) }}">
+        <meta property="og:type" content="website">
+        @if($job->image)
+            <meta property="og:image" content="{{ asset($job->image) }}">
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
+        @endif
+        <meta property="og:site_name" content="Oby Portal">
+    @endif
+
+    <!-- Twitter Card Meta Tags -->
+    @if(request()->routeIs('jobs.show') && isset($job))
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $job->title }} - {{ $job->company }}">
+        <meta name="twitter:description" content="Great job opportunity at {{ $job->company }}">
+        @if($job->image)
+            <meta name="twitter:image" content="{{ asset($job->image) }}">
+        @endif
+    @endif
+
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -14,7 +38,6 @@
     <!-- Fallback Tailwind CSS for mobile -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Vite Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-orange-50 antialiased">
     <div class="flex h-screen overflow-hidden">

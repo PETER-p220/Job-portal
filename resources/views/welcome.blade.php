@@ -7,6 +7,22 @@
 
     <title>@yield('title', config('app.name', 'OBY PORTAL'))</title>
 
+    <!-- Open Graph Meta Tags for WhatsApp Sharing -->
+    <meta property="og:title" content="OBY Portal - Find Your Dream Job">
+    <meta property="og:description" content="Discover amazing job opportunities and career resources. Connect with top employers and take your career to the next level.">
+    <meta property="og:url" content="{{ url('/') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="{{ asset('images/oby-portal-og-image.jpg') }}">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="OBY Portal">
+
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="OBY Portal - Find Your Dream Job">
+    <meta name="twitter:description" content="Discover amazing job opportunities and career resources.">
+    <meta name="twitter:image" content="{{ asset('images/oby-portal-og-image.jpg') }}">
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -15,7 +31,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
 
     <!-- Vite Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="font-sans antialiased bg-gray-100">
 
@@ -186,16 +201,9 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
                     </svg>
                     <h3 class="text-2xl sm:text-3xl font-bold text-gray-900 mb-3 sm:mb-4 px-4">No Opportunities Yet</h3>
-                    <p class="text-base sm:text-lg md:text-xl text-gray-600 mb-8 sm:mb-10 max-w-xl mx-auto px-4">
-                        We're adding new jobs every day. Check back soon or be the first to post!
-                    </p>
+                   
 
-                    @auth
-                        <a href="{{ route('jobs.create') }}" 
-                           class="inline-flex items-center px-8 sm:px-10 py-3 sm:py-4 md:py-5 bg-orange-600 text-white font-bold text-base sm:text-lg md:text-xl rounded-xl sm:rounded-2xl hover:bg-orange-700 transition-all shadow-lg">
-                            Post Your First Job
-                        </a>
-                    @endauth
+                   
                 </div>
             @endif
         </div>

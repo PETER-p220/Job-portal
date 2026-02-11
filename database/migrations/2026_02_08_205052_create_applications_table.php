@@ -11,17 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('applications', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('job_id')->constrained()->onDelete('cascade');
-            $table->string('status')->default('pending');
-            $table->text('cover_letter')->nullable();
-            $table->string('resume_path')->nullable();
-            $table->timestamps();
-            
-            $table->index(['user_id', 'job_id']);
-        });
+        // Only create table if it doesn't exist
+        if (!Schema::hasTable('applications')) {
+            Schema::create('applications', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->foreignId('job_id')->constrained()->onDelete('cascade');
+                $table->string('status')->default('pending');
+                $table->text('cover_letter')->nullable();
+                $table->string('resume_path')->nullable();
+                $table->timestamps();
+                
+                $table->index(['user_id', 'job_id']);
+            });
+        }
     }
 
     /**

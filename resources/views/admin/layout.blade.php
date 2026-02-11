@@ -13,7 +13,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     
     <!-- Vite Assets -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="bg-orange-50">
     <div class="flex h-screen">
@@ -128,7 +127,6 @@
     </div>
 
     <!-- Scripts -->
-    @vite(['resources/js/app.js'])
 
     <script>
         function toggleLogoDisplay(element) {

@@ -12,12 +12,25 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('interviews', function (Blueprint $table) {
-            $table->string('type')->nullable()->default(null);
-            $table->integer('duration')->nullable()->default(null);
-            $table->string('application_method')->nullable()->default(null);
-            $table->string('application_link')->nullable()->default(null);
-            $table->string('whatsapp_number')->nullable()->default(null);
-            $table->string('phone_number')->nullable()->default(null);
+            // Only add columns if they don't already exist
+            if (!Schema::hasColumn('interviews', 'type')) {
+                $table->string('type')->nullable()->default(null);
+            }
+            if (!Schema::hasColumn('interviews', 'duration')) {
+                $table->integer('duration')->nullable()->default(null);
+            }
+            if (!Schema::hasColumn('interviews', 'application_method')) {
+                $table->string('application_method')->nullable()->default(null);
+            }
+            if (!Schema::hasColumn('interviews', 'application_link')) {
+                $table->string('application_link')->nullable()->default(null);
+            }
+            if (!Schema::hasColumn('interviews', 'whatsapp_number')) {
+                $table->string('whatsapp_number')->nullable()->default(null);
+            }
+            if (!Schema::hasColumn('interviews', 'phone_number')) {
+                $table->string('phone_number')->nullable()->default(null);
+            }
         });
     }
 

@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -11,21 +12,24 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('interviews', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('job_id')->nullable()->constrained('job_postings')->onDelete('cascade');
-            $table->string('job_title');
-            $table->string('company');
-            $table->enum('type', ['Video Call', 'Phone Call', 'In-Person']);
-            $table->date('date');
-            $table->time('time');
-            $table->integer('duration'); // in minutes
-            $table->string('meeting_link');
-            $table->enum('status', ['upcoming', 'completed', 'cancelled', 'pending'])->default('upcoming');
-            $table->text('notes')->nullable();
-            $table->timestamps();
-        });
+        // Only create table if it doesn't exist
+        if (!Schema::hasTable('interviews')) {
+            Schema::create('interviews', function (Blueprint $table) {
+                $table->id();
+                $table->foreignId('user_id')->constrained()->onDelete('cascade');
+                $table->foreignId('job_id')->nullable()->constrained('job_postings')->onDelete('cascade');
+                $table->string('job_title');
+                $table->string('company');
+                $table->enum('type', ['Video Call', 'Phone Call', 'In-Person']);
+                $table->date('date');
+                $table->time('time');
+                $table->integer('duration'); // in minutes
+                $table->string('meeting_link');
+                $table->enum('status', ['upcoming', 'completed', 'cancelled', 'pending'])->default('upcoming');
+                $table->text('notes')->nullable();
+                $table->timestamps();
+            });
+        }
     }
 
     /**
