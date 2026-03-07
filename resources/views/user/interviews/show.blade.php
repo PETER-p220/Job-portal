@@ -254,14 +254,15 @@ function shareInterviewOnWhatsApp(interviewTitle, company, interviewImage, inter
     // Create a comprehensive message for sharing interviews
     let message = `🎯 *Interview Opportunity* 🎯\n\n`;
     message += `📌 *Position:* ${interviewTitle}\n`;
-    message += `🏢 *Company:* ${company}\n`;
+    message += `🏢 *Company:* ${company}\n\n`;
     
     if (interviewImage) {
-        message += `🖼️ *View Image:* ${window.location.origin}/${interviewImage}\n`;
+        message += `� *Company Image Available*\n`;
+        message += `🔗 View: ${window.location.origin}/${interviewImage}\n\n`;
     }
     
-    message += `\n🔗 *View Details & Apply:* ${interviewUrl}\n`;
-    message += `\n💼 *Share this interview opportunity with interested candidates!*`;
+    message += `🌐 *View Details & Apply:* ${interviewUrl}\n\n`;
+    message += `💼 *Share this interview opportunity with interested candidates!*`;
     
     // Open WhatsApp with the message (no specific number, user can choose recipient)
     const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;

@@ -7,6 +7,30 @@
 
     <title>@yield('title', config('app.name', 'OBY PORTAL'))</title>
 
+    <!-- Open Graph Meta Tags for WhatsApp Sharing -->
+    @if(request()->routeIs('jobs.show') && isset($job))
+        <meta property="og:title" content="{{ $job->title }} - {{ $job->company }}">
+        <meta property="og:description" content="{{ \Illuminate\Support\Str::limit(strip_tags($job->description), 150) }}">
+        <meta property="og:url" content="{{ route('jobs.show', $job) }}">
+        <meta property="og:type" content="website">
+        @if($job->image)
+            <meta property="og:image" content="{{ asset($job->image) }}">
+            <meta property="og:image:width" content="1200">
+            <meta property="og:image:height" content="630">
+        @endif
+        <meta property="og:site_name" content="OBY PORTAL">
+    @endif
+
+    <!-- Twitter Card Meta Tags -->
+    @if(request()->routeIs('jobs.show') && isset($job))
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="{{ $job->title }} - {{ $job->company }}">
+        <meta name="twitter:description" content="{{ \Illuminate\Support\Str::limit(strip_tags($job->description), 150) }}">
+        @if($job->image)
+            <meta name="twitter:image" content="{{ asset($job->image) }}">
+        @endif
+    @endif
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />

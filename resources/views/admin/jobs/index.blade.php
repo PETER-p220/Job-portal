@@ -150,6 +150,14 @@
                         <td class="px-6 py-4 text-right text-sm font-medium space-x-2">
                             <a href="{{ route('admin.jobs.edit', $job) }}" class="text-indigo-600 hover:text-indigo-900">Edit</a>
                             
+                            <button onclick="shareJobOnWhatsApp('{{ $job->title }}', '{{ $job->company }}', '{{ $job->image }}', '{{ route('jobs.show', $job) }}')"
+                                    class="inline-flex items-center px-2 py-1 bg-green-600 text-white text-xs font-medium rounded hover:bg-green-700 transition-colors">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.149-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297.669-1.612.669-1.612 0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                                Share (Shows Image)
+                            </button>
+                            
                             @if($job->isExpired())
                                 <form action="{{ route('admin.jobs.extend-deadline', $job) }}" method="POST" class="inline-block" onsubmit="return confirm('Do you want to extend the deadline for this job?')">
                                     @csrf
@@ -183,14 +191,21 @@ function downloadAndSendImage(imagePath, imageUrl) {
     // Create a temporary link to download the image
     const link = document.createElement('a');
     link.href = imageUrl;
-    link.download = 'company-image.jpg';
-    link.target = '_blank';
+    link.download = imagePath.split('/').pop();
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+}
+
+function shareJobOnWhatsApp(jobTitle, company, jobImage, jobUrl) {
+    // Share ONLY the job URL - WhatsApp will show image via Open Graph meta tags
+    // This is the BEST method for displaying images in WhatsApp
+    const message = `🔥 *Job Opportunity* 🔥\n\n${jobUrl}\n\n💼 *Share this opportunity with interested candidates!*`;
     
-    // Show instructions
-    alert('Image downloaded! Now you can:\n1. Open WhatsApp\n2. Attach the downloaded image\n3. Send it along with the job message');
+    // Open WhatsApp with the message (no specific number, user can choose recipient)
+    const whatsappUrl = `https://wa.me/?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+    return false;
 }
 </script>
 

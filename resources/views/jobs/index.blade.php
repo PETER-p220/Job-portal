@@ -78,7 +78,7 @@
             <!-- Job Listings -->
             @if($jobs->isNotEmpty())
                 <div class="grid gap-4 sm:gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    @foreach ($jobs as $job)
+                    @foreach ($jobs as $key => $job)
                         <div class="bg-white rounded-lg sm:rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md hover:border-orange-200 transition-all duration-200">
                             <div class="p-4 sm:p-6">
                                 <h3 class="text-lg sm:text-xl font-semibold text-gray-900 mb-2 sm:mb-2 line-clamp-2">
@@ -150,6 +150,13 @@
                                 </a>
                             </div>
                         </div>
+                        
+                        <!-- AdSense Ad after every 6 jobs -->
+                        @if(($key + 1) % 6 == 0 && $key + 1 < $jobs->count())
+                            <div class="col-span-full">
+                                <x-adsense slot="XXXXXXXXXX" format="auto" class="my-8" />
+                            </div>
+                        @endif
                     @endforeach
                 </div>
 

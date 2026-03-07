@@ -24,7 +24,7 @@
                     </div>
                     <div class="ml-3 sm:ml-4">
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Applications</p>
-                        <p class="text-xl sm:text-2xl font-bold text-gray-900">8</p>
+                        <p class="text-xl sm:text-2xl font-bold text-gray-900">{{ $appliedJobsCount }}</p>
                     </div>
                 </div>
             </div>
@@ -38,7 +38,7 @@
                     </div>
                     <div class="ml-3 sm:ml-4">
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Upcoming Interviews</p>
-                        <p class="text-xl sm:text-2xl font-bold text-gray-900">2</p>
+                        <p class="text-xl sm:text-2xl font-bold text-gray-900">{{ $upcomingInterviewsCount }}</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     </div>
                     <div class="ml-3 sm:ml-4">
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Saved Jobs</p>
-                        <p class="text-xl sm:text-2xl font-bold text-gray-900">15</p>
+                        <p class="text-xl sm:text-2xl font-bold text-gray-900">{{ $savedJobsCount }}</p>
                     </div>
                 </div>
             </div>
@@ -66,10 +66,15 @@
                     </div>
                     <div class="ml-3 sm:ml-4">
                         <p class="text-xs sm:text-sm font-medium text-gray-500">Profile Strength</p>
-                        <p class="text-xl sm:text-2xl font-bold text-gray-900">78%</p>
+                        <p class="text-xl sm:text-2xl font-bold text-gray-900">{{ $profileStrength }}%</p>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- AdSense Ad -->
+        <div class="my-8 border-t border-gray-200 pt-8">
+            <x-adsense slot="XXXXXXXXXX" format="auto" class="mb-8" />
         </div>
 
         <!-- Quick Actions -->
@@ -202,17 +207,78 @@
             </div>
         </div>
 
-        <!-- Recent Activity Placeholder -->
+        <!-- Recent Activity -->
         <div class="bg-white rounded-xl shadow-sm border border-gray-200">
             <div class="px-4 sm:px-6 py-3 sm:py-4 border-b border-gray-200">
                 <h2 class="text-base sm:text-lg font-semibold text-gray-900">Recent Activity</h2>
             </div>
-            <div class="p-6 sm:p-8 text-center text-gray-600">
-                <p class="mb-4 text-sm sm:text-base">Your recent applications, saved jobs, and upcoming interviews will appear here.</p>
-                <a href="{{ route('jobs.index') }}"
-                   class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm sm:text-base">
-                    Start Exploring Jobs
-                </a>
+            <div class="p-4 sm:p-6">
+                @if($recentInterviews->count() > 0 || $recentApplications->count() > 0)
+                    <div class="space-y-6">
+                        <!-- Recent Interviews -->
+                        @if($recentInterviews->count() > 0)
+                            <div class="mb-6">
+                                <h3 class="text-sm font-semibold text-gray-700 mb-3">Recent Interviews</h3>
+                                <div class="space-y-3">
+                                    @foreach($recentInterviews as $interview)
+                                        <div class="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                                            <div class="flex-1">
+                                                <div class="flex items-center">
+                                                    <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-900">{{ $interview->job_title }}</p>
+                                                        <p class="text-xs text-gray-600">{{ $interview->company }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="text-right">
+                                                    <p class="text-xs text-gray-500">{{ $interview->date->format('M j') }}</p>
+                                                    <p class="text-xs text-gray-500">{{ $interview->time->format('g:i A') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+
+                        <!-- Recent Applications -->
+                        @if($recentApplications->count() > 0)
+                            <div>
+                                <h3 class="text-sm font-semibold text-gray-700 mb-3">Recent Applications</h3>
+                                <div class="space-y-3">
+                                    @foreach($recentApplications as $application)
+                                        <div class="flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                                            <div class="flex-1">
+                                                <div class="flex items-center">
+                                                    <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
+                                                    <div>
+                                                        <p class="text-sm font-medium text-gray-900">{{ $application->job->title }}</p>
+                                                        <p class="text-xs text-gray-600">{{ $application->job->company }}</p>
+                                                    </div>
+                                                </div>
+                                                <div class="text-right">
+                                                    <p class="text-xs text-gray-500">{{ $application->created_at->format('M j') }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
+                    </div>
+                @else
+                    <div class="text-center py-10 sm:py-12">
+                        <svg class="mx-auto h-10 w-10 sm:h-12 sm:w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <h3 class="text-base sm:text-lg font-medium text-gray-900 mb-2">No recent activity</h3>
+                        <p class="text-sm text-gray-600 mb-4">Start applying to jobs and scheduling interviews to see your activity here.</p>
+                        <a href="{{ route('jobs.index') }}"
+                           class="inline-flex items-center px-6 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-sm sm:text-base">
+                            Browse Jobs
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

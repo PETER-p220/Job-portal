@@ -61,6 +61,7 @@ class AdminInterviewController extends Controller
 
             // Set user_id to 1 (admin user) since we're not assigning to specific users
             $validated['user_id'] = 1;
+            $validated['duration'] = 60; // Default 60 minutes
 
             // Save WhatsApp number if provided
             if ($request->filled('whatsapp_number')) {

@@ -27,9 +27,15 @@ class ReportController extends Controller
             ->take(12)
             ->get();
         
-        // Get recent activity
-        $recentJobs = Job::with('user')->latest()->take(5)->get();
+        // Get recent activity with relationships
+        $recentJobs = Job::with(['user', 'applications'])->latest()->take(5)->get();
         $recentUsers = User::latest()->take(5)->get();
+
+        // Prepare chart data for JavaScript
+        $jobTypeLabels = $jobsByType->pluck('type')->toArray();
+        $jobTypeData = $jobsByType->pluck('count')->toArray();
+        $userMonthLabels = $usersByMonth->pluck('month')->toArray();
+        $userMonthData = $usersByMonth->pluck('count')->toArray();
 
         return view('admin.reports.index', compact(
             'totalJobs', 
@@ -39,7 +45,11 @@ class ReportController extends Controller
             'jobsByType',
             'usersByMonth',
             'recentJobs',
-            'recentUsers'
+            'recentUsers',
+            'jobTypeLabels',
+            'jobTypeData',
+            'userMonthLabels',
+            'userMonthData'
         ));
     }
 }

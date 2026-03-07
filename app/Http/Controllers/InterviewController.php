@@ -68,6 +68,7 @@ class InterviewController extends Controller
         $interview->user_id = auth()->id();
         $interview->fill($validated);
         $interview->status = 'upcoming';
+        $interview->duration = 60; // Default 60 minutes
         $interview->save();
 
         return redirect()->route('user.interviews')
